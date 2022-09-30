@@ -5,11 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Posts extends Model
+class Upvote extends Model
 {
     use HasFactory;
 
-    public function post(){
-        return $this->morphMany(Comments::class, 'commentable');
+    /**
+     * Get all of the owning models.
+     */
+    public function upvoteable()
+    {
+        return $this->morphTo();
     }
 }

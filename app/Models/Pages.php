@@ -10,6 +10,6 @@ class Pages extends Model
     use HasFactory;
 
     public function comment(){
-        return $this->belongsTo(Comments::class, 'commentable');
+        return $this->morphMany(Comments::class, 'commentable');
     }
 }

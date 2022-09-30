@@ -1,8 +1,11 @@
 <?php
 
+use App\Models\Album;
 use App\Models\Comments;
 use App\Models\Pages;
 use App\Models\Posts;
+use App\Models\Song;
+use App\Models\Upvote;
 use Illuminate\Support\Facades\Route;
 
 
@@ -21,58 +24,78 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/page/comment', function(){
+Route::get('/comment', function (){
+    $comment = Comments::find(1);
 
-    // getting comments for a sample page...
+    var_dump($comment);
+});
+
+Route::get('/pages', function (){
+    $pages = Pages::find(1);
+
+    var_dump($pages);
+});
+
+Route::get('/find/Comment', function(){
+
+    // getting a comment...
+    $comments = Comments::find(1);
+
+    return $comments->commentable;
+});
+
+Route::get('/pages/comment', function() {
+
     $page = Pages::find(2);
 
+// getting the model...
+   // var_dump($page->comment);
     foreach($page->comment as $comment)
     {
         // working with comment here...
         return $comment;
     }
 
-});
-
-
-Route::get('/comment/page', function() {
-
-    $page = Pages::find(1);
-
-// getting the model...
-    var_dump($page->commentable);
-//    foreach($page->comment as $comment)
-//    {
-//        // working with comment here...
-//        return $comment;
-//    }
-
     });
 
-
-Route::get('/comment/pages', function() {
-
-    $comment = Comments::find(2);
-
-// getting the model...
-    var_dump($comment->commentable->body);
-
-});
-
-Route::get('/comment/posts', function() {
-
-    $comment = Comments::find(1);
-
-// getting the model...
-    var_dump($comment->commentable->content);
-
-});
-
-Route::get('/post/comment', function() {
+Route::get('/post/comment', function (){
 
     $post = Posts::find(1);
 
-// getting the model...
-    var_dump($post->commentable);
+    foreach ($post->post as $post){
+        return $post;
+    }
 
+});
+
+Route::get('add', function () {
+    $album = Album::create(['name' => 'More Life']);
+    $song = Song::create(['title' => 'Free smoke', 'album_id' => 1]);
+    $upvote1 = new Upvote;
+    $upvote2 = new Upvote;
+    $upvote3 = new Upvote;
+    $album->upvotes()->save($upvote1);
+    $song->upvotes()->save($upvote2);
+    $album->upvotes()->save($upvote3);
+});
+
+Route::get('/album/upvote', function (){
+    $album = Album::find(1);
+    $upvotes = $album->upvotes;
+    return $upvotes;
+    $upvotescount = $album->upvotes->count();
+    return $upvotescount;
+});
+
+Route::get('/song/upvote', function (){
+    $song = Song::find(1);
+    $upvotes = $song->upvotes;
+    return $upvotes;
+    $upvotescount = $song->upvotes->count();
+});
+
+Route::get('/upvote', function (){
+    $upvote = Upvote::find(2);
+    $model = $upvote->upvoteable;
+    return $model;
 });
