@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Pages extends Model
 {
     use HasFactory;
+
+    public function comment(){
+        return $this->belongsTo(Comments::class, 'commentable');
+    }
 }
