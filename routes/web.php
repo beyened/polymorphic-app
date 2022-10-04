@@ -4,7 +4,9 @@ use App\Models\Album;
 use App\Models\Comments;
 use App\Models\Pages;
 use App\Models\Posts;
+use App\Models\Product;
 use App\Models\Song;
+use App\Models\Staff;
 use App\Models\Upvote;
 use Illuminate\Support\Facades\Route;
 
@@ -68,6 +70,29 @@ Route::get('/post/comment', function (){
 
 });
 
+Route::get('/add/staff', function (){
+    $staff = new Staff(['name'=>'Elque']);
+    $staff->save();
+});
+
+Route::get('/add/product', function (){
+    $pro1 = new Product(['name'=>'Php Course']);
+    $pro2 = new Product(['name'=>'C++ Course']);
+    $pro1->save();
+    $pro2->save();
+});
+
+Route::get('/create', function (){
+
+    $staff = Staff::find(1);
+    $staff->photos();
+
+});
+
+
+
+
+
 Route::get('add', function () {
     $album = Album::create(['name' => 'More Life']);
     $song = Song::create(['title' => 'Free smoke', 'album_id' => 1]);
@@ -99,3 +124,4 @@ Route::get('/upvote', function (){
     $model = $upvote->upvoteable;
     return $model;
 });
+
