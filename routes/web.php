@@ -82,15 +82,13 @@ Route::get('/add/product', function (){
     $pro2->save();
 });
 
+
 Route::get('/create', function (){
 
     $staff = Staff::find(1);
-    $staff->photos();
+    $staff->photos()->create(['example.jpg']);
 
 });
-
-
-
 
 
 Route::get('add', function () {
