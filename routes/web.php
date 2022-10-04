@@ -3,6 +3,7 @@
 use App\Models\Album;
 use App\Models\Comments;
 use App\Models\Pages;
+use App\Models\Photo;
 use App\Models\Posts;
 use App\Models\Product;
 use App\Models\Song;
@@ -70,26 +71,6 @@ Route::get('/post/comment', function (){
 
 });
 
-Route::get('/add/staff', function (){
-    $staff = new Staff(['name'=>'Elque']);
-    $staff->save();
-});
-
-Route::get('/add/product', function (){
-    $pro1 = new Product(['name'=>'Php Course']);
-    $pro2 = new Product(['name'=>'C++ Course']);
-    $pro1->save();
-    $pro2->save();
-});
-
-
-Route::get('/create', function (){
-
-    $staff = Staff::find(1);
-    $staff->photos()->create(['example.jpg']);
-
-});
-
 
 Route::get('add', function () {
     $album = Album::create(['name' => 'More Life']);
@@ -123,3 +104,68 @@ Route::get('/upvote', function (){
     return $model;
 });
 
+
+
+Route::get('/add/staff', function (){
+    $staff = new Staff(['name'=>'Desta']);
+    $staff->save();
+});
+
+Route::get('/add/product', function (){
+    $pro1 = new Product(['name'=>'Php Course']);
+    $pro2 = new Product(['name'=>'C++ Course']);
+    $pro1->save();
+    $pro2->save();
+});
+
+
+Route::get('/staff/photo', function (){
+
+    $staff = Staff::find(1);
+    $staff->photos()->create(['path'=>'example.jpg']);
+
+});
+
+Route::get('/product/photo', function (){
+
+    $product = Product::find(1);
+    $product->photos()->create(['path'=>'product.jpg']);
+
+});
+
+
+Route::get('/get/photo', function (){
+
+//    $product = Product::find(1);
+//    return $product->photos;
+    $staff = Staff::find(1);
+    return $staff->photos;
+
+});
+
+Route::get('update/photo', function (){
+    $product = Product::findOrFail(1);
+    $photo = $product->photos()->whereId(2)->first();
+    $photo->path = 'Update New.jpg';
+    $photo->save();
+});
+
+Route::get('delete/photo', function (){
+    $product = Product::findOrFail(1);
+    $photo = $product->photos()->whereId(2)->delete();
+});
+
+/* Assign photos to staff */
+Route::get('assign', function (){
+    $staff = Staff::findOrFail(1);
+
+    $photo = Photo::findOrFail(4);
+
+    $staff->photos()->save($photo);
+});
+
+Route::get('un-assign', function (){
+    $staff = Staff::findOrFail(1);
+
+    $staff->photos()->whereId(4)->update(['imageable_id'=>0, 'imageable_type'=>'']);
+});
